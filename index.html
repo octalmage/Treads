@@ -15,15 +15,14 @@
 </head>
 
 <body>
-
-<div id="editor">//Load a file into the editor.
-var fs = require('fs'), editor;
-
-fs.readFile("text.txt", 'utf8', function(err, data)
-{
-    editor.setValue(data);
-    editor.selection.clearSelection();
-});</div>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-xs-2 col-xs-offset-10"><button id="saveButton" style="float: right;" type="button" class="btn btn-primary btn-xs">Save</button></div>
+</div>
+</div>
+<div id="editor">
+    
+</div>
 
     <script src="src/ace.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
