@@ -8,8 +8,9 @@ $(document).on("ready", function()
 
 	$("#saveButton").on("click", function()
 	{
+    content = editor.getValue();
 		//Run platform specific write function. Format: <platform>_write();
-		window[process.platform + "_write"]();
+		window[process.platform + "_write"](content);
 	});
 });
 
@@ -19,17 +20,17 @@ $(document).on("ready", function()
  */
 function darwin_read()
 {
-	fs.readFile("/etc/hosts", "utf8", function (err,data) 
-	{
-  		if (err) 
-  		{
-    		return console.log(err);
-  		}
-  	
-  		editor.setValue(data);
-    	editor.selection.clearSelection();
-    	return data;
-	});
+  fs.readFile("/etc/hosts", "utf8", function (err,data) 
+  {
+      if (err) 
+      {
+        return console.log(err);
+      }
+    
+      editor.setValue(data);
+      editor.selection.clearSelection();
+      return data;
+  });
 }
 
 /**
@@ -39,15 +40,54 @@ function darwin_read()
  */
 function darwin_write(content)
 {
-	fs.writeFile("/etc/hosts", content, function(err) 
-	{
-    	if(err) 
-    	{
-        	console.log(err);
-        	return 0;
-    	} 
-    	
+  fs.writeFile("/etc/hosts", content, function(err) 
+  {
+      if(err) 
+      {
+          console.log(err);
+          return 0;
+      } 
+      
         return 1;
 
-	}); 
+  }); 
+}
+
+/**
+ * linux_read Reads the hosts file on Linux.
+ * @return {string} Returns hosts file on success, error on fail. 
+ */
+function linux_read()
+{
+  fs.readFile("/etc/hosts", "utf8", function (err,data) 
+  {
+      if (err) 
+      {
+        return console.log(err);
+      }
+    
+      editor.setValue(data);
+      editor.selection.clearSelection();
+      return data;
+  });
+}
+
+/**
+ * Writes to /etc/hosts on Linux.
+ * @param  {string} content Text to write to /etc/hosts
+ * @return {boolean}        True for False. 
+ */
+function linux_write(content)
+{
+  fs.writeFile("/etc/hosts", content, function(err) 
+  {
+      if(err) 
+      {
+          console.log(err);
+          return 0;
+      } 
+      
+        return 1;
+
+  });
 }
