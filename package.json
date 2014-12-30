@@ -1,9 +1,9 @@
 {
-  "name": "Neutron Editor",
+  "name": "Treads",
   "main": "index.html",
    "window": 
    {
-    "title": "Neutron Editor",
+    "title": "Treads",
     "toolbar": false,
     "frame": true
     }
