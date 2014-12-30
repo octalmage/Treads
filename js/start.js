@@ -1,4 +1,6 @@
 var fs = require("fs");
+var exec = require('child_process').exec;
+var password;
 
 //On Load
 $(document).on("ready", function()
@@ -40,17 +42,25 @@ function darwin_read()
  */
 function darwin_write(content)
 {
-  fs.writeFile("/etc/hosts", content, function(err) 
+  if (!password)
   {
+    //Temporary until I create a real dialog.
+    password=prompt("Please enter your password."); 
+  }
+  chmod("777").done(function()
+  {
+    fs.writeFile("/etc/hosts", content, function(err) 
+    {
+      chmod("644");
       if(err) 
       {
           console.log(err);
           return 0;
       } 
-      
-        return 1;
 
-  }); 
+      return 1;
+    }); 
+  });
 }
 
 /**
@@ -90,4 +100,28 @@ function linux_write(content)
         return 1;
 
   });
+}
+
+/**
+ * Chmod /etc/hosts
+ * @param  {int} stat The permissions to apply. 
+ * @return {deferred.promise}      A promise to track the exec status. 
+ */ 
+function chmod(stat)
+{
+  var deferred = new $.Deferred();
+  exec("echo " + password + " | sudo -S chmod " + stat + " /etc/hosts", function (err, stdout, stderr) 
+  {
+    if (err)
+    {
+      console.log(err);
+      deferred.reject();
+    }
+    else
+    {
+      console.log(stdout);
+      deferred.resolve();
+    }
+  });
+  return deferred.promise();
 }
