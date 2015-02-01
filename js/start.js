@@ -119,14 +119,12 @@ function chmod(stat)
 
 	exec("/bin/echo " + password + " | /usr/bin/sudo -S /bin/chmod " + stat + " /etc/hosts", function(err, stdout, stderr)
 	{
-		if (err)
+		if (stderr.indexOf("incorrect password") != -1)
 		{
-			console.log(err);
 			deferred.reject();
 		}
 		else
 		{
-			console.log(stdout);
 			deferred.resolve();
 		}
 	});
