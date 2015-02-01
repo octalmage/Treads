@@ -110,7 +110,7 @@ function linux_write(content)
 function chmod(stat)
 {
 	var deferred = new $.Deferred();
-	exec("echo " + password + " | sudo -S chmod " + stat + " /etc/hosts", function(err, stdout, stderr)
+	exec("/bin/echo " + password + " | /usr/bin/sudo -S /bin/chmod " + stat + " /etc/hosts", function(err, stdout, stderr)
 	{
 		if (err)
 		{
