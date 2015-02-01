@@ -1,5 +1,7 @@
+var Q = require("q");
 var fs = require("fs");
 var exec = require('child_process').exec;
+
 var password;
 
 //On Load
@@ -47,7 +49,7 @@ function darwin_write(content)
 		//Temporary until I create a real dialog.
 		password = prompt("Please enter your password.");
 	}
-	chmod("777").done(function()
+	chmod("777").then(function()
 	{
 		fs.writeFile("/etc/hosts", content, function(err)
 		{
@@ -60,6 +62,10 @@ function darwin_write(content)
 
 			return 1;
 		});
+	}, function(error)
+	{
+		password=null;
+		alert("Password incorrect!")
 	});
 }
 
@@ -109,7 +115,8 @@ function linux_write(content)
  */
 function chmod(stat)
 {
-	var deferred = new $.Deferred();
+	var deferred = Q.defer();
+
 	exec("/bin/echo " + password + " | /usr/bin/sudo -S /bin/chmod " + stat + " /etc/hosts", function(err, stdout, stderr)
 	{
 		if (err)
@@ -123,5 +130,5 @@ function chmod(stat)
 			deferred.resolve();
 		}
 	});
-	return deferred.promise();
+	return deferred.promise;
 }
