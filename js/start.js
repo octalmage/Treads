@@ -21,7 +21,12 @@ var password;
 $(document).on("ready", function()
 {
 	//Run platform specific read functions. Format: <platform>_read();
-	window[process.platform + "_read"]();
+	window[process.platform + "_read"]().then(function(data)
+	{
+		editor.setValue(data);
+		editor.selection.clearSelection();
+		editor.getSession().setScrollTop(0);
+	});
 
 	$("#saveButton").on("click", function()
 	{
@@ -37,17 +42,17 @@ $(document).on("ready", function()
  */
 function darwin_read()
 {
+	var deferred = Q.defer();
 	fs.readFile("/etc/hosts", "utf8", function(err, data)
 	{
 		if (err)
 		{
-			return console.log(err);
+			deferred.reject();
 		}
-
-		editor.setValue(data);
-		editor.selection.clearSelection();
-		return data;
+		
+		deferred.resolve(data);
 	});
+	return deferred.promise;
 }
 
 /**
@@ -88,17 +93,17 @@ function darwin_write(content)
  */
 function linux_read()
 {
+	var deferred = Q.defer();
 	fs.readFile("/etc/hosts", "utf8", function(err, data)
 	{
 		if (err)
 		{
-			return console.log(err);
+			deferred.reject();
 		}
-
-		editor.setValue(data);
-		editor.selection.clearSelection();
-		return data;
+		
+		deferred.resolve(data);
 	});
+	return deferred.promise;
 }
 
 /**
