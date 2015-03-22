@@ -1,6 +1,19 @@
 var Q = require("q");
 var fs = require("fs");
 var exec = require('child_process').exec;
+var gui = require('nw.gui');
+
+var win = gui.Window.get();
+
+if (process.platform === "darwin")
+{
+	var mb = new gui.Menu(
+	{
+		type: "menubar"
+	});
+	mb.createMacBuiltin("Treads");
+	win.menu = mb;
+}
 
 var password;
 
