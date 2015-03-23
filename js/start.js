@@ -115,13 +115,30 @@ function linux_write(content)
 {
 	fs.writeFile("/etc/hosts", content, function(err)
 	{
-		if (err)
+		if (!password)
 		{
-			console.log(err);
-			return 0;
+			//Temporary until I create a real dialog.
+			password = prompt("Please enter your password.");
 		}
+		chmod("777").then(function()
+		{
 
-		return 1;
+			fs.writeFile("/etc/hosts", content, function(err)
+			{
+				chmod("644");
+				if (err)
+				{
+					console.log(err);
+					return 0;
+				}
+
+				return 1;
+			});
+		}, function(error)
+		{
+			password=null;
+			alert("Password incorrect!")
+		});
 
 	});
 }
