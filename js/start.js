@@ -48,7 +48,9 @@ $(document).on("ready", function()
 
 		get_a_record(installname).then(function(data)
 		{
-			// Do stuff
+			editor.setValue(editor.getValue() + "\n" + data + " " + domainname);
+			editor.selection.clearSelection();
+			editor.getSession().setScrollTop(0);
 		});
 	});
 });
