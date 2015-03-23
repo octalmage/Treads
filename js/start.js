@@ -34,6 +34,12 @@ $(document).on("ready", function()
 		//Run platform specific write function. Format: <platform>_write();
 		window[process.platform + "_write"](content);
 	});
+	
+	$("#addButton").on("click", function()
+	{
+		var domainname = prompt("Please enter your domain name.");
+		var install = prompt("Please enter your WP Engine install name.");
+	});
 });
 
 /**
