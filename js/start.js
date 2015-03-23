@@ -2,6 +2,7 @@ var Q = require("q");
 var fs = require("fs");
 var exec = require('child_process').exec;
 var gui = require('nw.gui');
+var dns = require('dns');
 
 var win = gui.Window.get();
 
@@ -38,7 +39,17 @@ $(document).on("ready", function()
 	$("#addButton").on("click", function()
 	{
 		var domainname = prompt("Please enter your domain name.");
-		var install = prompt("Please enter your WP Engine install name.");
+		var installname = prompt("Please enter your WP Engine install name.");
+
+		if (installname.indexOf("wpengine.com") == -1)
+		{
+			installname = installname + ".wpengine.com";
+		}
+
+		get_a_record(installname).then(function(data)
+		{
+			// Do stuff
+		});
 	});
 });
 
