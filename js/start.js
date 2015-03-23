@@ -171,3 +171,21 @@ function chmod(stat)
 	});
 	return deferred.promise;
 }
+
+function get_a_record(hostname)
+{
+	var deferred = Q.defer();
+
+	dns.lookup(hostname, function(err, address, family) {
+
+		if (err)
+		{
+			deferred.reject();
+		}
+		else
+		{
+			deferred.resolve(address);
+		}
+	});
+	return deferred.promise;
+}
