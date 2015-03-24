@@ -50,7 +50,7 @@ $(document).on("ready", function()
 		{
 			editor.setValue(editor.getValue() + "\n" + data + " " + domainname);
 			editor.selection.clearSelection();
-			editor.getSession().setScrollTop(0);
+			editor.getSession().scrollToRow(editor.getSession().getLastVisibleRow());
 		});
 	});
 });
