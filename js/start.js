@@ -6,6 +6,7 @@ var dns = require('dns');
 
 var win = gui.Window.get();
 
+win.focus();
 if (process.platform === "darwin")
 {
 	var mb = new gui.Menu(
