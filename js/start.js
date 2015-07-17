@@ -40,8 +40,22 @@ $(document).on("ready", function()
 	$("#addButton").on("click", function()
 	{
 		var domainname = prompt("Please enter your domain name.");
-		var installname = prompt("Please enter your WP Engine install name.");
 
+		if (domainname === null) return;
+		
+		var installname = prompt("Please enter your WP Engine install name or IP.");
+		
+		if (installname === null) return;
+		
+		var ip = installname.split(".");
+		if (ip.length === 4)
+		{
+			editor.setValue(editor.getValue() + "\n" + installname + " " + domainname);
+			editor.selection.clearSelection();
+			editor.getSession().scrollToRow(editor.getSession().getLastVisibleRow());
+			return;
+		}
+		
 		if (installname.indexOf("wpengine.com") == -1)
 		{
 			installname = installname + ".wpengine.com";
